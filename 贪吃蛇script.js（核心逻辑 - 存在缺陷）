@@ -1,0 +1,64 @@
+// 初始化游戏参数
+let snake = [{ x: 200, y: 200 }];
+let apple = { x: 0, y: 0 };
+let direction = "right";
+let score = 0;
+
+// 生成苹果（缺陷：同时最多生成1个苹果）
+function generateApple() {
+    const maxApples = 1; // 问题点：限制只能生成1个苹果
+    apple.x = Math.floor(Math.random() * 20) * 20;
+    apple.y = Math.floor(Math.random() * 20) * 20;
+    document.getElementById("game-board").innerHTML += 
+        `<div class="apple" style="left:${apple.x}px; top:${apple.y}px"></div>`;
+}
+
+// 移动蛇
+function moveSnake() {
+    const head = { ...snake[0] };
+    switch(direction) {
+        case "right": head.x += 20; break;
+        case "left": head.x -= 20; break;
+        case "up": head.y -= 20; break;
+        case "down": head.y += 20; break;
+    }
+    snake.unshift(head);
+
+    // 碰撞检测
+    if (head.x === apple.x && head.y === apple.y) {
+        score += 10;
+        document.getElementById("score").textContent = score;
+        generateApple();
+    } else {
+        snake.pop();
+    }
+}
+
+// 渲染蛇
+function renderSnake() {
+    const board = document.getElementById("game-board");
+    board.innerHTML = "";
+    snake.forEach((part, index) => {
+        board.innerHTML += 
+            `<div class="snake-part" style="left:${part.x}px; top:${part.y}px"></div>`;
+    });
+}
+
+// 游戏循环
+setInterval(() => {
+    moveSnake();
+    renderSnake();
+}, 200);
+
+// 初始化苹果
+generateApple();
+
+// 键盘控制
+document.addEventListener("keydown", (e) => {
+    switch(e.key) {
+        case "ArrowRight": direction = "right"; break;
+        case "ArrowLeft": direction = "left"; break;
+        case "ArrowUp": direction = "up"; break;
+        case "ArrowDown": direction = "down"; break;
+    }
+});
