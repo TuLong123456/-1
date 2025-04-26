@@ -6,7 +6,7 @@ let score = 0;
 
 // 生成苹果（缺陷：同时最多生成1个苹果）
 function generateApple() {
-    const maxApples = 1; // 问题点：限制只能生成1个苹果
+    const maxApples = 5; // 问题点：限制只能生成1个苹果
     apple.x = Math.floor(Math.random() * 20) * 20;
     apple.y = Math.floor(Math.random() * 20) * 20;
     document.getElementById("game-board").innerHTML += 
